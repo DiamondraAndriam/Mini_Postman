@@ -3,43 +3,39 @@ package treatment;
 import java.net.*;
 import java.util.*;;
 
-public class TreatmentRequest{
-    static String[] listMethod = { "POST","GET","PUT","DELETE"};
-    
+public class TreatmentRequest {
+    static String[] listMethod = { "POST", "GET", "PUT", "DELETE" };
+
     String method;
     URL url;
-    String httpVersion;             /*** mbola amboarina ***/
 
     String host;
     int port;
 
     String[] requestHeader;
-    String[] requestBody;
+    String requestBody;
 
-    public String getMethod(){
+    public String getMethod() {
         return this.method;
     }
-    public URL getUrl(){
+
+    public URL getUrl() {
         return this.url;
     }
-    public String getHttpVersion(){
-        return this.httpVersion;
-    }
-    
-    public String[] getRequestHeader(){
+
+    public String[] getRequestHeader() {
         return this.requestHeader;
     }
-    public String[] getRequestBody(){
+
+    public String getRequestBody() {
         return this.requestBody;
     }
 
-    public void setMethod(String method){
+    public void setMethod(String method) {
         this.method = method;
     }
-    public void setHttpVersion(String httpVersion){
-        this.httpVersion = httpVersion;
-    }
-    public void setUrl(String url) throws Exception{
+
+    public void setUrl(String url) throws Exception {
         this.url = new URL(url);
     }
 
@@ -49,33 +45,46 @@ public class TreatmentRequest{
             throw new Exception("Pas d'url");
         }
         String path = this.url.getPath();
-        if(this.httpVersion == null){
-            setHttpVersion("HTTP/1.1");
-        }
         String host = url.getHost();
         int port = url.getPort();
         if(port == -1) port = 80;
 
-        String pattern = this.method + " " + path + this.httpVersion;
+        String pattern = this.method + " " + path + "HTTP/1.1";
+        if(this.method.equalsIgnoreCase("GET")){
+            pattern = this.method + " " + path;
+        }
         header.add(pattern);
         header.add("Host: " + host + ":" + port);
         header.add("User-Agent: navigateur_postman/2022.12.0");
-        
-    }
-    public void setRequestBody() throws Exception{
         if(this.method.equalsIgnoreCase("POST")){
-            //mbola asiana zavatra   
+            String thisUrl = url.toString();
+            String parameter = thisUrl.split("?",2)[1];
+            header.add("Content-Type: application/x-www-form-urlencoded");
+            header.add("Content-Length: " + parameter.length());
+            requestBody = parameter;
         }
+        if(this.method.equalsIgnoreCase("PUT")){
+            header.add("Content-type: text/html");
+            header.add("Content-length: 16");
+            requestBody = "<p>Nouveau fichier</p>";
+        }
+        // mety miampy pour autre methode que get
+
+        String[] reqHeaders = new String[header.size()];
+        int i = 0;
+        for(Object head:header.toArray()){
+            reqHeaders[i] = (String) head;
+            i++;
+        }
+        requestHeader = reqHeaders;
     }
 
-    public TreatmentRequest(String url, String method) throws Exception{
-        try{
+    public TreatmentRequest(String url, String method) throws Exception {
+        try {
             setMethod(method);
             setUrl(url);
             setRequestHeader();
-            setRequestBody();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw new Exception("Requete incorrecte");
         }
     }
