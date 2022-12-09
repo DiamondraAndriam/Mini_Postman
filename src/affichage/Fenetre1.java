@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 import listener.ButtonListener;
-import treatment.Client;
+import treatment.*;
 
 public class Fenetre1 extends JFrame {
 
@@ -62,10 +62,13 @@ public class Fenetre1 extends JFrame {
     // code généré depuis via netbean IDE
     private void initComponents() {
 
+        buttonListener = new ButtonListener(this);
         jPanel1 = new JPanel();
         jComboBox1 = new JComboBox<>();
         jButton1 = new JButton("Send");
+        jButton1.addMouseListener(buttonListener);
         jButton2 = new JButton("Save");
+        jButton2.addMouseListener(buttonListener);
         jTextField1 = new JTextField();
         jTabbedPane1 = new JTabbedPane();
         jScrollPane1 = new JScrollPane();
@@ -191,6 +194,7 @@ public class Fenetre1 extends JFrame {
 
     public void setJtextPane1() throws Exception {
         String[] head = client.getHeader();
+        jTextPane1.setEditable(false);
 
         SimpleAttributeSet styleNormal = new SimpleAttributeSet();
         StyleConstants.setFontFamily(styleNormal, "Source Sans Pro Semibold");
@@ -198,19 +202,21 @@ public class Fenetre1 extends JFrame {
 
         StyledDocument doc = jTextPane1.getStyledDocument();
         for (int i = 0; i < head.length; i++) {
-            doc.insertString(doc.getLength(), head[i]+"\n", styleNormal);
+            doc.insertString(doc.getLength(), head[i] + "\n", styleNormal);
         }
 
     }
 
     public void setJTextPane2() throws Exception {
+        jTextPane2.setEditable(false);
+
         SimpleAttributeSet styleNormal = new SimpleAttributeSet();
         StyleConstants.setFontFamily(styleNormal, "Source Sans Pro Semibold");
         StyleConstants.setFontSize(styleNormal, 14);
 
         StyledDocument doc = jTextPane2.getStyledDocument();
         for (int i = 0; i < client.getBody().length; i++) {
-            doc.insertString(doc.getLength(), client.getBody()[i]+"\n", styleNormal);
+            doc.insertString(doc.getLength(), client.getBody()[i] + "\n", styleNormal);
         }
     }
 
@@ -227,6 +233,12 @@ public class Fenetre1 extends JFrame {
         }
     }
 
-    public void save() {
+    public void save() throws IOException{
+        String url = this.getTitle();
+        String[] source = url.split("//", 2);
+        String string = source[1].replace("/", "-");
+        String fichier = string.replace(" ","_");
+        Fichier file = new Fichier("fichier/"+fichier+".html");
+        file.write(client.getBody());
     }
 }

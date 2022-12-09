@@ -4,7 +4,7 @@ import java.net.*;
 import java.util.*;;
 
 public class TreatmentRequest {
-    //static String[] listMethod = { "POST", "GET", "PUT", "DELETE" };
+    // static String[] listMethod = { "POST", "GET", "PUT", "DELETE" };
 
     String method;
     URL url;
@@ -18,15 +18,19 @@ public class TreatmentRequest {
     public String getMethod() {
         return this.method;
     }
+
     public URL getUrl() {
         return this.url;
     }
-    public int getPort(){
+
+    public int getPort() {
         return this.port;
     }
-    public String getHost(){
+
+    public String getHost() {
         return this.host;
     }
+
     public String[] getRequestHeader() {
         return this.requestHeader;
     }
@@ -38,42 +42,48 @@ public class TreatmentRequest {
     public void setMethod(String method) {
         this.method = method;
     }
-    public void setPort(int port){
-        if(port == -1) port = 80;
+
+    public void setPort(int port) {
+        if (port == -1)
+            port = 80;
         this.port = port;
     }
-    public void setHost(String host){
+
+    public void setHost(String host) {
         this.host = host;
     }
+
     public void setUrl(String url) throws Exception {
         this.url = new URL(url);
     }
 
-    public void setRequestHeader() throws Exception{
+    public void setRequestHeader(String url) throws Exception {
         Vector<String> header = new Vector<String>();
-        if(this.url == null){
+        if (this.url == null) {
             throw new Exception("Pas d'url");
         }
         String path = this.url.getPath();
-        setHost(url.getHost());
-        setPort(url.getPort());
-        if(port == -1) port = 80;
+        setHost(this.url.getHost());
+        setPort(this.url.getPort());
+        if (port == -1)
+            port = 80;
 
-        if(path.equalsIgnoreCase("")) path = "/";
+        if (path.equalsIgnoreCase(""))
+            path = "/";
         String pattern = this.method + " " + path + " HTTP/1.1";
-        // pour la méthode GET : si on ne met pas la version de HTTP, on ne reçoit pas de header
+        // pour la méthode GET : si on ne met pas la version de HTTP, on ne reçoit pas
+        // de header
 
         header.add(pattern);
         header.add("Host: " + host + ":" + port);
         header.add("User-Agent: navigateur_postman/2022.12.0");
-        if(this.method.equalsIgnoreCase("POST")){
-            String thisUrl = url.toString();
-            String parameter = thisUrl.split("?",2)[1];
+        if (url.contains("?")) {
+            String parameter = url.split("?", 2)[1];
             header.add("Content-Type: application/x-www-form-urlencoded");
             header.add("Content-Length: " + parameter.length());
             requestBody = parameter;
         }
-        if(this.method.equalsIgnoreCase("PUT")){
+        if (this.method.equalsIgnoreCase("PUT")) {
             header.add("Content-type: text/html");
             header.add("Content-length: 16");
             requestBody = "<p>Nouveau fichier</p>";
@@ -82,7 +92,7 @@ public class TreatmentRequest {
 
         String[] reqHeaders = new String[header.size()];
         int i = 0;
-        for(Object head:header.toArray()){
+        for (Object head : header.toArray()) {
             reqHeaders[i] = (String) head;
             System.out.println(reqHeaders[i]);
             i++;
@@ -94,14 +104,17 @@ public class TreatmentRequest {
         try {
             setMethod(method);
             setUrl(url);
-            setRequestHeader();
+            setRequestHeader(url);
         } catch (Exception e) {
             throw new Exception("Requete incorrecte");
         }
     }
 
-    //test fonctionnement test Treatement
-    /*public static void main(String[] args) throws Exception{
-        TreatmentRequest treat = new TreatmentRequest("http://localhost:8080/form/","GET");
-    }*/
+    // test fonctionnement test Treatement
+    /*
+     * public static void main(String[] args) throws Exception{
+     * TreatmentRequest treat = new
+     * TreatmentRequest("http://localhost:8080/form/","GET");
+     * }
+     */
 }

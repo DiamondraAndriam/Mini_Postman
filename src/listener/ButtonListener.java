@@ -61,7 +61,16 @@ public class ButtonListener implements MouseListener {
             }
             // save request
             if ((JButton) e.getSource() == fen.getJButton2()) {
-
+                try{
+                    fen.save();
+                }
+                catch (Exception exc) {
+                    Fenetre fenetre = new Fenetre();
+                    String string = "Impossible de le sauvegarder. Veuillez entrer une addresse.";
+                    fenetre.getJLabel1().setText(string);
+                    fenetre.getJTextField1().setText(fen.getTitle());
+                    frame.setVisible(false);
+                }
             }
         }
     }
