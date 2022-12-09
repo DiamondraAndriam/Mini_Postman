@@ -1,3 +1,4 @@
+package test;
 import javax.swing.*;
 import java.io.*;
 
@@ -7,7 +8,7 @@ public class DisplayWebPage extends JFrame{
         editor.setEditable(false);
 
         try{
-            editor.setPage("https://example.com/");
+            editor.setPage("http://localhost:8080/form/");
         } catch( IOException e){
             editor.setContentType("text/html");
             editor.setText("La page n'a pas pu charger");

@@ -8,7 +8,7 @@ public class Client {
     Socket clientSocket;
     URL url;
     String[] response;
-    Header header;
+    String[] header;
     String[] body;
 
     public void setClientSocket(Socket socket) {
@@ -19,51 +19,46 @@ public class Client {
         this.url = url;
     }
 
-    /***
-     * tokony jerena hoe akory ny affichage eo amin'ny separation header sy body
-     ***/
-
     public void setHeaderBody(String[] response) {
         Vector<String> m_header = new Vector<String>();
         Vector<String> m_body = new Vector<String>();
 
         int i = 0;
-        try{
-        while(!response[i].equalsIgnoreCase("<!DOCTYPE html>")){
-            m_header.add(response[i]);
-            i++;
-        }
-        while(i != response.length){
-            m_body.add(response[i]);
-            i++;
-        }
-        String[] listHeader = new String[m_header.size()];
-        String[] listBody = new String[m_body.size()];
-        System.out.println("Header:");
-        for(i = 0; i < m_header.size(); i++){
-            listHeader[i] = m_header.get(i);
-            System.out.println(listHeader[i]);
-        }
-        this.header = new Header(listHeader);
-        System.out.println();
-        System.out.println("Body:");
-        for(i = 0; i < m_body.size(); i++){
-            listBody[i] = m_body.get(i);
-            System.out.println(listBody[i]);
-        }
-        this.body = listBody;
-        }
-        catch(Exception e){
+        try {
+            while (!response[i].equalsIgnoreCase("<!DOCTYPE html>")) {
+                m_header.add(response[i]);
+                i++;
+            }
+            while (i != response.length) {
+                m_body.add(response[i]);
+                i++;
+            }
+            String[] listHeader = new String[m_header.size()];
+            String[] listBody = new String[m_body.size()];
+            System.out.println("Header:");
+            for (i = 0; i < m_header.size(); i++) {
+                listHeader[i] = m_header.get(i);
+                // System.out.println(listHeader[i]);
+            }
+            this.header = listHeader;
+            System.out.println();
+            System.out.println("Body:");
+            for (i = 0; i < m_body.size(); i++) {
+                listBody[i] = m_body.get(i);
+                // System.out.println(listBody[i]);
+            }
+            this.body = listBody;
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     public URL getUrl() {
         return this.url;
     }
 
-    public Header getHeader() {
+    public String[] getHeader() {
         return this.header;
     }
 
@@ -100,28 +95,30 @@ public class Client {
             int i = 0;
             for (Object string : liste.toArray()) {
                 response[i] = (String) string;
-                //System.out.println(response[i]);
+                // System.out.println(response[i]);
                 i++;
             }
             System.out.println(response.length);
+            setHeaderBody(response);
         } catch (Exception e) {
             throw new Exception("Erreur sur l'output");
         }
-        setHeaderBody(response);
     }
 
-    public static Client createClient(TreatmentRequest treat) throws Exception{
-        return new Client(treat.getMethod(),treat.getHost(),treat.getPort(),treat.getRequestHeader(),treat.getRequestBody());
+    public static Client createClient(TreatmentRequest treat) throws Exception {
+        return new Client(treat.getMethod(), treat.getHost(), treat.getPort(), treat.getRequestHeader(),
+                treat.getRequestBody());
     }
+
     // test fonctionnement fonction
-    public static void main(String[] args) throws Exception{
-        String[] header = new String[3];
-        header[0] = "GET /L2/08_Ajax_v3/ HTTP/1.1";
-        header[1] = "Host: localhost:8080";
-        header[2] = "User-Agent: navigateur_postman/";
-        Client client = new Client("GET","localhost",80,header,null);
-    }
-
-
+    /*
+     * public static void main(String[] args) throws Exception{
+     * String[] header = new String[3];
+     * header[0] = "GET /L2/08_Ajax_v3/ HTTP/1.1";
+     * header[1] = "Host: localhost:8080";
+     * header[2] = "User-Agent: navigateur_postman/";
+     * Client client = new Client("GET","localhost",80,header,null);
+     * }
+     */
 
 }
