@@ -20,11 +20,20 @@ public class Header {
     public Header(String[] list) {
         int i = 0;
         length = list.length;
+        System.out.println(length);
         key = new String[length];
         values = new String[length];
         for (String header : list) {
-            key[i] = header.split(":", 2)[0];
-            values[i] = header.split(":", 2)[1];
+            if(i==0){
+                key[0] = "Status";
+                values[0] = header;
+            }
+            else if(i<length-1){
+                key[i] = header.split(":", 2)[0];
+                System.out.println(key[i]);
+                values[i] = header.split(":", 2)[1];
+                i++;
+            }
         }
     }
 

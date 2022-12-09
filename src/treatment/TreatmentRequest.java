@@ -4,7 +4,7 @@ import java.net.*;
 import java.util.*;;
 
 public class TreatmentRequest {
-    static String[] listMethod = { "POST", "GET", "PUT", "DELETE" };
+    //static String[] listMethod = { "POST", "GET", "PUT", "DELETE" };
 
     String method;
     URL url;
@@ -18,11 +18,15 @@ public class TreatmentRequest {
     public String getMethod() {
         return this.method;
     }
-
     public URL getUrl() {
         return this.url;
     }
-
+    public int getPort(){
+        return this.port;
+    }
+    public String getHost(){
+        return this.host;
+    }
     public String[] getRequestHeader() {
         return this.requestHeader;
     }
@@ -34,7 +38,13 @@ public class TreatmentRequest {
     public void setMethod(String method) {
         this.method = method;
     }
-
+    public void setPort(int port){
+        if(port == -1) port = 80;
+        this.port = port;
+    }
+    public void setHost(String host){
+        this.host = host;
+    }
     public void setUrl(String url) throws Exception {
         this.url = new URL(url);
     }
@@ -45,14 +55,14 @@ public class TreatmentRequest {
             throw new Exception("Pas d'url");
         }
         String path = this.url.getPath();
-        String host = url.getHost();
-        int port = url.getPort();
+        setHost(url.getHost());
+        setPort(url.getPort());
         if(port == -1) port = 80;
 
-        String pattern = this.method + " " + path + "HTTP/1.1";
-        if(this.method.equalsIgnoreCase("GET")){
-            pattern = this.method + " " + path;
-        }
+        if(path.equalsIgnoreCase("")) path = "/";
+        String pattern = this.method + " " + path + " HTTP/1.1";
+        // pour la méthode GET : si on ne met pas la version de HTTP, on ne reçoit pas de header
+
         header.add(pattern);
         header.add("Host: " + host + ":" + port);
         header.add("User-Agent: navigateur_postman/2022.12.0");
@@ -68,12 +78,13 @@ public class TreatmentRequest {
             header.add("Content-length: 16");
             requestBody = "<p>Nouveau fichier</p>";
         }
-        // mety miampy pour autre methode que get
+        // mety miampy pour autre methode que get, post sy put
 
         String[] reqHeaders = new String[header.size()];
         int i = 0;
         for(Object head:header.toArray()){
             reqHeaders[i] = (String) head;
+            System.out.println(reqHeaders[i]);
             i++;
         }
         requestHeader = reqHeaders;
@@ -88,4 +99,9 @@ public class TreatmentRequest {
             throw new Exception("Requete incorrecte");
         }
     }
+
+    //test fonctionnement test Treatement
+    /*public static void main(String[] args) throws Exception{
+        TreatmentRequest treat = new TreatmentRequest("http://localhost:8080/form/","GET");
+    }*/
 }
