@@ -53,7 +53,7 @@ public class ButtonListener implements MouseListener {
                     frame.setVisible(false);
                 } catch (Exception exc) {
                     Fenetre fenetre = new Fenetre();
-                    String string = exc.getMessage() + ". Veuillez entrer une addresse.";
+                    String string = exc.getMessage();
                     fenetre.getJLabel1().setText(string);
                     fenetre.getJTextField1().setText(url);
                     frame.setVisible(false);
@@ -66,7 +66,7 @@ public class ButtonListener implements MouseListener {
                 }
                 catch (Exception exc) {
                     Fenetre fenetre = new Fenetre();
-                    String string = "Impossible de le sauvegarder. Veuillez entrer une addresse.";
+                    String string = "Impossible de le sauvegarder.";
                     fenetre.getJLabel1().setText(string);
                     fenetre.getJTextField1().setText(fen.getTitle());
                     frame.setVisible(false);
