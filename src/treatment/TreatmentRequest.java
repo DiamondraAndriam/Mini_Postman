@@ -62,27 +62,34 @@ public class TreatmentRequest {
         if (this.url == null) {
             throw new Exception("Pas d'url");
         }
-        String path = this.url.getPath();
+
         setHost(this.url.getHost());
         setPort(this.url.getPort());
-        if (port == -1)
-            port = 80;
 
-        if (path.equalsIgnoreCase(""))
-            path = "/";
+        String path = this.url.getPath();
+        if (path.equalsIgnoreCase(""))  path = "/";
+
+        // cas ou il y a un query avec l'url
+        String query = this.url.getQuery();
+
+        // si methode get -> query avec le path
+        if(this.method.equalsIgnoreCase("GET")){
+            if(query!=null){
+                path += "?"+query;
+            }
+        }
+        // si methode post -> query dqns le body de la requete
+        if(this.method.equalsIgnoreCase("POST")){
+            requestBody = query;
+        }
+
+        // requete pour envoyer le path
         String pattern = this.method + " " + path + " HTTP/1.1";
-        // pour la méthode GET : si on ne met pas la version de HTTP, on ne reçoit pas
-        // de header
 
         header.add(pattern);
         header.add("Host: " + host + ":" + port);
-        header.add("User-Agent: navigateur_postman/2022.12.0");
-        if (url.contains("?")) {
-            String parameter = url.split("?", 2)[1];
-            header.add("Content-Type: application/x-www-form-urlencoded");
-            header.add("Content-Length: " + parameter.length());
-            requestBody = parameter;
-        }
+        header.add("User-Agent: navigateur_postman/1.0");
+        
         if (this.method.equalsIgnoreCase("PUT")) {
             header.add("Content-type: text/html");
             header.add("Content-length: 16");
@@ -94,7 +101,7 @@ public class TreatmentRequest {
         int i = 0;
         for (Object head : header.toArray()) {
             reqHeaders[i] = (String) head;
-            System.out.println(reqHeaders[i]);
+            //System.out.println(reqHeaders[i]);
             i++;
         }
         requestHeader = reqHeaders;

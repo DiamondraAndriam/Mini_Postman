@@ -30,8 +30,8 @@ public class ButtonListener implements MouseListener {
                     fenetre.setVisible(true);
                     frame.setVisible(false);
                 } catch (Exception exc) {
-                    exc.printStackTrace();
-                    String string = exc.getMessage() + ". Veuillez entrer une addresse.";
+                    //exc.printStackTrace();
+                    String string = exc.getMessage();
                     fen.getJLabel1().setText(string);
                 }
             }

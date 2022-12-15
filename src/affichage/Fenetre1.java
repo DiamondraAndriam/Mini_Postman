@@ -23,6 +23,7 @@ public class Fenetre1 extends JFrame {
     JTextPane jTextPane2;
     ButtonListener buttonListener;
     Client client;
+    String body;
 
     // getters nécessaires
     public JButton getJButton1() {
@@ -111,7 +112,7 @@ public class Fenetre1 extends JFrame {
         jScrollPane1.setViewportView(jTextPane1);
 
         jTabbedPane1.addTab("Header", jScrollPane1);
-
+        
         jScrollPane2.setViewportView(jTextPane2);
 
         jTabbedPane1.addTab("Body", jScrollPane2);
@@ -215,8 +216,10 @@ public class Fenetre1 extends JFrame {
         StyleConstants.setFontSize(styleNormal, 14);
 
         StyledDocument doc = jTextPane2.getStyledDocument();
+        body = "";
         for (int i = 0; i < client.getBody().length; i++) {
             doc.insertString(doc.getLength(), client.getBody()[i] + "\n", styleNormal);
+            body += client.getBody()[i];
         }
     }
 
@@ -229,7 +232,7 @@ public class Fenetre1 extends JFrame {
             jEditorPane1.setPage(url);
         } catch (IOException e) {
             jEditorPane1.setContentType("text/html");
-            jEditorPane1.setText("La page n'a pas pu charger");
+            jEditorPane1.setText(body);
         }
     }
 

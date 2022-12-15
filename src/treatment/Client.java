@@ -25,24 +25,25 @@ public class Client {
 
         int i = 0;
         try {
-            while (!response[i].equalsIgnoreCase("<!DOCTYPE html>")) {
+            while (response[i].length()!=0) {
                 m_header.add(response[i]);
-                i++;
+                i ++;
             }
+            i ++;
             while (i != response.length) {
                 m_body.add(response[i]);
                 i++;
             }
             String[] listHeader = new String[m_header.size()];
             String[] listBody = new String[m_body.size()];
-            System.out.println("Header:");
+            //System.out.println("Header:");
             for (i = 0; i < m_header.size(); i++) {
                 listHeader[i] = m_header.get(i);
                 // System.out.println(listHeader[i]);
             }
             this.header = listHeader;
-            System.out.println();
-            System.out.println("Body:");
+            //System.out.println();
+            //System.out.println("Body:");
             for (i = 0; i < m_body.size(); i++) {
                 listBody[i] = m_body.get(i);
                 // System.out.println(listBody[i]);
@@ -88,9 +89,12 @@ public class Client {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             for (String object : in.lines().toList()) {
                 liste.add(object);
-                System.out.println("/" + object + "/");
+                //System.out.println("/" + object + "/");
             }
             clientSocket.close();
+            if(liste.size() == 0){
+                throw new Exception("Impossible de se connecter au serveur"); 
+            }
             response = new String[liste.size()];
             int i = 0;
             for (Object string : liste.toArray()) {
@@ -98,10 +102,10 @@ public class Client {
                 // System.out.println(response[i]);
                 i++;
             }
-            System.out.println(response.length);
+            //System.out.println(response.length);
             setHeaderBody(response);
         } catch (Exception e) {
-            throw new Exception("Erreur sur l'output");
+            throw new Exception("Probleme de connexion internet");
         }
     }
 
