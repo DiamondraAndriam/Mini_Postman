@@ -20,6 +20,7 @@ public class ButtonListener implements MouseListener {
                 String url = fen.getJTextField1().getText();
                 // System.out.println(url);
                 String method = (String) fen.getJComboBox1().getSelectedItem();
+    
                 try {
                     TreatmentRequest treat = new TreatmentRequest(url, method);
                     Client client = Client.createClient(treat);
