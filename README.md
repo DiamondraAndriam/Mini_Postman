@@ -35,6 +35,6 @@
 - Certains site font une redirection
     Le premier code envoyé est donc une redirection de l'url qui affiche un status code 301 ou 302.
     Il se peut alors que en inputstream du socket, on reçoit 2 réponses en même temps ou n'affiche que l'erreur.
-- Seul le protocol HTTP est pris en charge et interprète les requête HTTPS comme sans les requêtes HTTP
+- Seul le protocol HTTP est pris en charge et l'application interprète les requête HTTPS comme les requêtes HTTP sans surcouche de sécurité
 
 (c) ANDRIAMAMPIANDRA Diamondra Fitiavana ETU001748
