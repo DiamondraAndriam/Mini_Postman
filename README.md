@@ -35,3 +35,5 @@
 - Certains site font une redirection
     Le premier code envoyé est donc une redirection de l'url qui affiche un status code 301 ou 302.
     Il se peut alors que en inputstream du socket, on reçoit 2 réponses en même temps ou n'affiche que l'erreur.
+
+(c) ANDRIAMAMPIANDRA Diamondra Fitiavana ETU001748
